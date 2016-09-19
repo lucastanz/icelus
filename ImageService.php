@@ -83,8 +83,8 @@ class ImageService
                 );
                 $this->completed[$image][$width][$height][$crop]['filename'] = $thumb_name;
             }
-        }
 
-        return $this->prefix . '/' . $this->completed[$image][$width][$height][$crop]['filename'];
+            return $this->prefix . '/' . $this->completed[$image][$width][$height][$crop]['filename'];
+        }
     }
 }
