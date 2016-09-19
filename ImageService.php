@@ -58,27 +58,31 @@ class ImageService
      */
     public function thumbnail($image, $width = 150, $height = 150, $crop = false)
     {
-        // no sense duplicating work - only process image if thumbnail doesn't already exist
-        if (!isset($this->completed[$image][$width][$height][$crop]['filename'])) {
-            $this->prepOutputDir();
-            $this->imanee->load($this->source_dir . '/' . $image)->thumbnail($width, $height, $crop);
-            $thumb_name = vsprintf(
-                '%s-%sx%s%s.%s',
-                array(
-                    md5($image),
-                    $width,
-                    $height,
-                    ($crop ? '-cropped' : ''),
-                    strtolower($this->imanee->getFormat())
-                )
-            );
+        $thumb_name = vsprintf(
+            '%s-%sx%s%s.%s',
+            array(
+                md5($image),
+                $width,
+                $height,
+                ($crop ? '-cropped' : ''),
+                'jpeg'
+            )
+        );
 
-            // write the thumbnail to disk
-            file_put_contents(
-                $this->output_dir . $this->prefix . '/' . $thumb_name,
-                $this->imanee->output()
-            );
-            $this->completed[$image][$width][$height][$crop]['filename'] = $thumb_name;
+        if ( ! file_exists($this->output_dir . $this->prefix . '/' . $thumb_name )) {
+
+            // no sense duplicating work - only process image if thumbnail doesn't already exist
+            if (!isset($this->completed[$image][$width][$height][$crop]['filename'])) {
+                $this->prepOutputDir();
+                $this->imanee->load($this->source_dir . '/' . $image)->thumbnail($width, $height, $crop);
+
+                // write the thumbnail to disk
+                file_put_contents(
+                    $this->output_dir . $this->prefix . '/' . $thumb_name,
+                    $this->imanee->output()
+                );
+                $this->completed[$image][$width][$height][$crop]['filename'] = $thumb_name;
+            }
         }
 
         return $this->prefix . '/' . $this->completed[$image][$width][$height][$crop]['filename'];
