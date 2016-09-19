@@ -82,9 +82,10 @@ class ImageService
                     $this->imanee->output()
                 );
             }
-            $this->completed[$image][$width][$height][$crop]['filename'] = $thumb_name;
-
-            return $this->prefix . '/' . $this->completed[$image][$width][$height][$crop]['filename'];
         }
+
+        $this->completed[$image][$width][$height][$crop]['filename'] = $thumb_name;
+
+        return $this->prefix . '/' . $this->completed[$image][$width][$height][$crop]['filename'];
     }
 }
