@@ -94,9 +94,6 @@ class ImageService
 
                 // rotates image if portrait
                 if (($this->imanee->getResource()->getResource()->getImageOrientation() == \imagick::ORIENTATION_RIGHTTOP)) {
-                    echo $this->imanee->getWidth() . "\n\n";
-                    echo $this->imanee->getHeight() . "\n\n";
-                    exit;
                     $this->imanee->rotate(90, '#000000');
                 }
 
