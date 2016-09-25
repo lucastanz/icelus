@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('watermark_image')->defaultNull()->end()
                 ->scalarNode('prefix')->defaultValue('/_thumbs')->end()
                 ->scalarNode('output_dir')->defaultNull()->end()
             ->end();
