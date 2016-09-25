@@ -62,6 +62,18 @@ class ImageService
      */
     public function thumbnail($image, $width = 150, $height = 150, $crop = false, $watermark = false)
     {
+/*
+        if( strpos($image, '0420')) {
+            echo "\n\n";
+            $this->imanee->load($this->source_dir . '/' . $image);
+            var_dump($this->imanee->getSize());
+            var_dump(($this->imanee->getResource()->getResource()->getImageProperties()));
+            if (($this->imanee->getResource()->getResource()->getImageOrientation() == \imagick::ORIENTATION_RIGHTTOP)) {
+                $this->imanee->getResource()->getResource()->rotateImage("#FFF", 90);
+            }
+            exit('ciao');
+        }
+ */
         $thumb_name = vsprintf(
             '%s-%sx%s%s.%s',
             array(
@@ -80,6 +92,15 @@ class ImageService
                 $this->prepOutputDir();
                 $this->imanee->load($this->source_dir . '/' . $image);
 
+                // rotates image if portrait
+                if (($this->imanee->getResource()->getResource()->getImageOrientation() == \imagick::ORIENTATION_RIGHTTOP)) {
+                    echo $this->imanee->getWidth() . "\n\n";
+                    echo $this->imanee->getHeight() . "\n\n";
+                    exit;
+                    $this->imanee->rotate(90, '#000000');
+                }
+
+                // adds watermark
                 if ($watermark && false === empty($this->watermark_image)) {
                     $this->imanee->watermark($this->source_dir . $this->watermark_image, Imanee::IM_POS_BOTTOM_RIGHT, 0);
                 }
