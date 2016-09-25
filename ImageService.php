@@ -80,11 +80,11 @@ class ImageService
                 $this->prepOutputDir();
                 $this->imanee->load($this->source_dir . '/' . $image);
 
-                $this->imanee->thumbnail($width, $height, $crop);
-
                 if ($watermark && false === empty($this->watermark_image)) {
                     $this->imanee->watermark($this->source_dir . $this->watermark_image, Imanee::IM_POS_BOTTOM_RIGHT, 0);
                 }
+
+                $this->imanee->thumbnail($width, $height, $crop);
 
                 // write the thumbnail to disk
                 file_put_contents(
