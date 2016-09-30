@@ -62,18 +62,6 @@ class ImageService
      */
     public function thumbnail($image, $width = 150, $height = 150, $crop = false, $watermark = false)
     {
-/*
-        if( strpos($image, '0420')) {
-            echo "\n\n";
-            $this->imanee->load($this->source_dir . '/' . $image);
-            var_dump($this->imanee->getSize());
-            var_dump(($this->imanee->getResource()->getResource()->getImageProperties()));
-            if (($this->imanee->getResource()->getResource()->getImageOrientation() == \imagick::ORIENTATION_RIGHTTOP)) {
-                $this->imanee->getResource()->getResource()->rotateImage("#FFF", 90);
-            }
-            exit('ciao');
-        }
- */
         $thumb_name = vsprintf(
             '%s-%sx%s%s.%s',
             array(
@@ -92,6 +80,9 @@ class ImageService
                 $this->prepOutputDir();
                 $this->imanee->load($this->source_dir . '/' . $image);
 
+		        $this->imanee->getResource()->getResource()->setImageCompression(true);
+		        $this->imanee->getResource()->getResource()->setImageCompression(\imagick::COMPRESSION_JPEG);
+		        $this->imanee->getResource()->getResource()->setImageCompressionQuality(75); 
                 // rotates image if portrait
                 if (($this->imanee->getResource()->getResource()->getImageOrientation() == \imagick::ORIENTATION_RIGHTTOP)) {
                     $this->imanee->rotate(90, '#000000');
