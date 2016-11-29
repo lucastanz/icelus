@@ -62,7 +62,10 @@ class ImageService
      */
     public function thumbnail($image, $width = 150, $height = 150, $crop = false, $watermark = false, $compression = 80)
     {
-        $thumb_name = vsprintf(
+        $path_parts = pathinfo($image);
+        $img_name_prefix = $path_parts['filename'] . '_';
+
+        $thumb_name = $img_name_prefix . vsprintf(
             '%s-%sx%s%s.%s',
             array(
                 md5($image),
@@ -84,9 +87,9 @@ class ImageService
 		        $this->imanee->getResource()->getResource()->setImageCompression(\imagick::COMPRESSION_JPEG);
 		        $this->imanee->getResource()->getResource()->setImageCompressionQuality($compression); 
                 // rotates image if portrait
-                //if (($this->imanee->getResource()->getResource()->getImageOrientation() == \imagick::ORIENTATION_RIGHTTOP)) {
-                //    $this->imanee->rotate(90, '#000000');
-                //}
+                if (($this->imanee->getResource()->getResource()->getImageOrientation() == \imagick::ORIENTATION_RIGHTTOP)) {
+                    $this->imanee->rotate(90, '#000000');
+                }
 
                 // adds watermark
                 if ($watermark && false === empty($this->watermark_image)) {
